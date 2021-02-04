@@ -99,25 +99,29 @@ router.post('/leaderboard',async(req,res,next)=>{
        let games = await  resulTable.distinct("gameId");
        console.log(games);   
         for(game of games){
-            let count1 =0,count2=0;
-     let details = await resulTable.aggregate([
-                //  {$match:{'gameId':game}},
+            let totalwinsu1 = 0,totalwinsu2 = 0;
+              let details = await resulTable.aggregate([
+                 {$match:{'gameId':game}},
                 //  {$group:{_id:"$u1id",total:{$sum:"$scoreu1"}}}
                 //  {$group:{_id:"$u2id",total:{$sum:"$scoreu2"}}}
                 {
-                    $project:
-                      {
-                        item:"$game",
-                        totalwins:
-                          {
-                            $cond: { if: { $eq: [ "$win", true] }, then: count1++, else: count2++}
-                          }
-                      }
-                 }
-       
+                    $group:{
+                        _id:{u1id:"$u1id",u2id:"$u2id"},                                               
+                        u1_totalpoints:{$sum:"$scoreu1"}, 
+                        u2_totalpoints:{$sum:"$scoreu2"}                      
+                    }
+                }
+               
         ])
         console.log(details)
         // console.log("change");
+        // let get = await resulTable.find({'gameId':game})
+        // console.log(get)
+        details.forEach(element=>{
+            console.log(element._id.u1id);
+            console.log(element._id.u2id);
+            console.log("hii");
+        })
 }
     }
    catch(err){
