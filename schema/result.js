@@ -12,3 +12,4 @@ const data= new Schema({
     updated_at:{type:String, default:''}
 })
 module.exports = mongoose.model('Result',data);
+// {$group:{_id:{u1id:"$u1id",u2id:"$u2id"},total:{$sum:"$scoreu1",$sum:"$scoreu2"}}}

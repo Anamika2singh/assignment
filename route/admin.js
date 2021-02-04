@@ -141,9 +141,9 @@ router.post("/leaderboard", async (req, res, next) => {
       // console.log(get)
       details.forEach((element) => {
         console.log(element._id.u1id);
-      let winpoint = await resulTable.find({'u1id':element._id.u1id})
-        console.log(element._id.u2id);
-        console.log("hii");
+    //    resulTable.find({'u1id':element._id.u1id})
+    //     console.log(element._id.u2id);
+    //     console.log("hii");
       });
     }
   } catch (err) {
