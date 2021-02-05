@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const { Validator } = require("node-input-validator");
-const { find } = require("../schema/game");
+const { find, count } = require("../schema/game");
+
+
 const gameCreate = require("../schema/game");
 const resulTable = require("../schema/result");
 console.log("admin");
@@ -120,32 +122,59 @@ router.post("/leaderboard", async (req, res, next) => {
   try {
     let games = await resulTable.distinct("gameId");
     console.log(games);
-    for (game of games) {
-      let totalwinsu1 = 0,
-        totalwinsu2 = 0;
+    let leader = [];
+    let winner =[];
+ for (game of games) 
+ {
       let details = await resulTable.aggregate([
         { $match: { gameId: game } },
-        //  {$group:{_id:"$u1id",total:{$sum:"$scoreu1"}}}
-        //  {$group:{_id:"$u2id",total:{$sum:"$scoreu2"}}}
-        {
+          {
           $group: {
             _id: { u1id: "$u1id", u2id: "$u2id" },
             u1_totalpoints: { $sum: "$scoreu1" },
             u2_totalpoints: { $sum: "$scoreu2" },
+              },
           },
-        },
       ]);
       console.log(details);
-      // console.log("change");
-      // let get = await resulTable.find({'gameId':game})
-      // console.log(get)
-      details.forEach((element) => {
-        console.log(element._id.u1id);
-    //    resulTable.find({'u1id':element._id.u1id})
-    //     console.log(element._id.u2id);
-    //     console.log("hii");
+         details.forEach(
+                async(element) => {
+                  // console.log(element)
+              // console.log(element._id.u1id);
+              // console.log(element._id.u2id);
+              // console.log(element.u1_totalpoints);
+              // console.log(element.u2_totalpoints);
+          // let single = await resulTable.find({'u1id':element._id.u1id})
+            // console.log (Boolean(single.win))
+            // console.log(single)
+              leader.push({
+                "gameid":game,
+                "u1id" : element._id.u1id,
+                "u1totalpoints ":element.u1_totalpoints,
+                "u2id": element._id.u2id,
+                "u2totalpoints":element.u2_totalpoints
+              })
+            // console.log(leader);
+
+
+
+            // winner.push(element._id.u1id,element._id.u2id)
+            // console.log(winner);
+        
+          //        console.log(single);
+               // let single1 = await resulTable.find({'u1id':element._id.u1id})
+          //   console.log (Boolean(single1.win))
+          //        console.log (Boolean(single.win));
+          //        if(Boolean(single.win)){
+          //         console.log("validatn");
+          //        }
+                
       });
+      
     }
+    // console.log(winner);
+    
+   console.log(leader);
   } catch (err) {
     console.log(err);
     res.send(err);
