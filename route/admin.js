@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const { Validator } = require("node-input-validator");
 const { find, count } = require("../schema/game");
-
+const bcrypt = require('bcrypt');
 
 const gameCreate = require("../schema/game");
 const resulTable = require("../schema/result");

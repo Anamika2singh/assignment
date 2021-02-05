@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const { Validator } = require("node-input-validator");
 const jwt = require("jsonwebtoken");
